@@ -1,0 +1,7 @@
+﻿print "Hello World";
+var z = 3828.123;
+
+for(var i;i<10; i++){
+	print "Hello World";
+	
+}
