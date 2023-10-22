@@ -1,7 +1,6 @@
-﻿print "Hello World";
-var z = 3828.123;
-
-for(var i;i<10; i++){
-	print "Hello World";
-	
-}
+﻿/*asdasd
+asdas*/
+print "Hello World";
+/*asdasd
+asdas*/
+var a  = "Holaa";

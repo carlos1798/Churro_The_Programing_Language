@@ -87,7 +87,8 @@
             VAR,
             WHILE,
 
-            EOF
+            EOF,
+            COMMENT_BLOCK
         }
     }
 }

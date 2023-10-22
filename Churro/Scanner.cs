@@ -1,4 +1,5 @@
 ﻿using Churro;
+using System.ComponentModel.Design;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
@@ -154,16 +155,23 @@ internal class Scanner
 
     private void Comment()
     {
-        if (Match('/'))
+        if (Peek() == '*' && !IsAtEnd())
         {
-            while (Peek() != '\n' && !IsAtEnd())
-            {
-                Advance();
-            }
+            CommentBlock();
         }
         else
         {
-            AddToken(Token.TokenType.SLASH);
+            if (Match('/'))
+            {
+                while (Peek() != '\n' && !IsAtEnd())
+                {
+                    Advance();
+                }
+            }
+            else
+            {
+                AddToken(Token.TokenType.SLASH);
+            }
         }
     }
 
@@ -207,4 +215,33 @@ internal class Scanner
         { "var",Token.TokenType.VAR},
         { "while",Token.TokenType.WHILE},
     };
+
+    private void CommentBlock()
+    {
+        Advance();
+        while (Peek() != '*' && !IsAtEnd())
+        {
+            if (Peek() == '\n')
+            {
+                line++;
+            }
+            Advance();
+        };
+
+        if (Match('*') && !IsAtEnd())
+        {
+            if (Match('/') && !IsAtEnd())
+            {
+                AddToken(Token.TokenType.COMMENT_BLOCK, source.Substring(start + 2, current - start - 4));
+            }
+            else
+            {
+                ErrorList.Add(new Error(line, "UNCLOSED COMMENT BLOCK"));
+            }
+        }
+        else
+        {
+            ErrorList.Add(new Error(line, "UNCLOSED COMMENT BLOCK"));
+        }
+    }
 }
