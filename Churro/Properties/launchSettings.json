@@ -1,12 +1,15 @@
 {
   "profiles": {
     "Churro": {
-      "commandLineArgs": "C:\\Users\\carlos\\repos\\Churro\\Churro\\main.chu",
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\carlos\\repos\\Churro\\Churro\\main.chu"
     },
     "Profile 2": {
+      "commandName": "Project"
+    },
+    "Profile 1": {
       "commandName": "Project",
-      "commandLineArgs": ""
+      "commandLineArgs": "as asd\r\n"
     }
   }
 }

@@ -10,6 +10,11 @@ internal class Program
         sw.WriteLine("{");
         sw.WriteLine($"public abstract class {BaseName}");
         sw.WriteLine("{");
+
+        sw.WriteLine("public abstract T  Accept<T>(IVisitor<T> visitor);");
+
+        defineVisitor(sw, BaseName, types);
+
         foreach (String type in types)
         {
             string className = type.Split(':')[0].Trim();
@@ -23,6 +28,18 @@ internal class Program
         //
 
         sw.Close();
+    }
+
+    private static void defineVisitor(StreamWriter sw, string baseName, List<string> types)
+    {
+        sw.WriteLine(" public interface IVisitor<T>{");
+        foreach (String type in types)
+        {
+            string typeName = type.Split(":")[0].Trim();
+            sw.WriteLine($"  T visit{typeName}{baseName}({typeName} {baseName.ToLower()});");
+        }
+
+        sw.WriteLine("}");
     }
 
     private static void defineType(StreamWriter sw, string baseName, string className, string fields)
@@ -45,6 +62,12 @@ internal class Program
         {
             sw.WriteLine($"     public {fieldArr[i]};");
         }
+        sw.WriteLine();
+        //public override T Accept<T>(IVisitor<T> visitor)
+        sw.WriteLine(" public override T Accept<T>(IVisitor<T> visitor){");
+        sw.WriteLine($"return visitor.visit{className}{baseName}(this);");
+
+        sw.WriteLine("}");
         sw.WriteLine("}");
         sw.WriteLine($"");
         //
@@ -52,18 +75,18 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        if (args.Length != 1)
-        {
-            Console.WriteLine("Usage:Generate Ast <output_dir>");
-            Environment.Exit(69);
-        }
-        String outputDir = args[0];
-        List<String> types = new List<String>() {
-          "Binary   : Expr left, Token Operator, Expr right",
-          "Grouping : Expr expression",
-          "Literal  : Object value",
-          "Unary    : Token Operator, Expr right"
-        };
-        defineAst(outputDir, "Expr", types);
+        //        if (args.Length != 1)
+        //        {
+        //            Console.WriteLine("Usage:Generate Ast <output_dir>");
+        //            Environment.Exit(69);
+        //        }
+        //        String outputDir = args[0];
+        //        List<String> types = new List<String>() {
+        //          "Binary   : Expr left, Token Operator, Expr right",
+        //          "Grouping : Expr expression",
+        //          "Literal  : Object value",
+        //          "Unary    : Token Operator, Expr right"
+        //        };
+        //        defineAst(outputDir, "Expr", types);
     }
 }

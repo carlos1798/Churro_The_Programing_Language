@@ -2,6 +2,19 @@ namespace Churro
 {
     public abstract class Expr
     {
+        public abstract T Accept<T>(IVisitor<T> visitor);
+
+        public interface IVisitor<T>
+        {
+            T visitBinaryExpr(Binary expr);
+
+            T visitGroupingExpr(Grouping expr);
+
+            T visitLiteralExpr(Literal expr);
+
+            T visitUnaryExpr(Unary expr);
+        }
+
         public class Binary : Expr
         {
             public Binary(Expr left, Token Operator, Expr right)
@@ -14,6 +27,11 @@ namespace Churro
             public Expr left;
             public Token Operator;
             public Expr right;
+
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                return visitor.visitBinaryExpr(this);
+            }
         }
 
         public class Grouping : Expr
@@ -24,6 +42,11 @@ namespace Churro
             }
 
             public Expr expression;
+
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                return visitor.visitGroupingExpr(this);
+            }
         }
 
         public class Literal : Expr
@@ -34,6 +57,11 @@ namespace Churro
             }
 
             public Object value;
+
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                return visitor.visitLiteralExpr(this);
+            }
         }
 
         public class Unary : Expr
@@ -46,6 +74,11 @@ namespace Churro
 
             public Token Operator;
             public Expr right;
+
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                return visitor.visitUnaryExpr(this);
+            }
         }
     }
 }

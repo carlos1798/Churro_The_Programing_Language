@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AST_Class_Generator;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Churro
@@ -12,6 +13,16 @@ namespace Churro
             if (args.Count() > 1)
             {
                 Console.WriteLine($"Usage: churro [script]");
+
+                Expr expression = new Expr.Binary(
+                   new Expr.Unary(
+                         new Token(Token.TokenType.MINUS, "-", null, 1),
+                         new Expr.Literal(123)),
+                         new Token(Token.TokenType.STAR, "*", null, 1),
+                         new Expr.Grouping(
+                                new Expr.Literal(45.67)));
+                Console.WriteLine(new ASTPrinter().print(expression));
+
                 Environment.Exit(69);
             }
             else if (args.Count() == 1)
