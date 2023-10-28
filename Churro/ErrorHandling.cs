@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Churro
 {
-    public class Error
+    public class ErrorHandling
     {
-        public Error(int line, string? message)
+        public ErrorHandling(int line, string? message)
         {
             Line = line;
             Message = message;
@@ -20,6 +20,14 @@ namespace Churro
         public void report(string where)
         {
             Console.WriteLine($"[line {this.Line}] Error {where} : {Message}");
+        }
+
+        public static void Error(Token token, string message)
+        {
+            if (token.Type == Token.TokenType.EOF)
+            {
+                Console.WriteLine($" {token.Line} at end {message}");
+            }
         }
     }
 }

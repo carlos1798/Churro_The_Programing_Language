@@ -6,7 +6,7 @@ using System.Text.Json;
 
 internal class Scanner
 {
-    public List<Error> ErrorList;
+    public List<ErrorHandling> ErrorList;
 
     private string source;
     private List<Token> tokens;
@@ -18,7 +18,7 @@ internal class Scanner
     {
         this.source = source;
         this.tokens = new List<Token>();
-        this.ErrorList = new List<Error>();
+        this.ErrorList = new List<ErrorHandling>();
     }
 
     private bool IsAtEnd()
@@ -88,7 +88,7 @@ internal class Scanner
                 }
                 else
                 {
-                    ErrorList.Add(new Error(line, $"UNEXPEDTED CHARACTER.{c}"));
+                    ErrorList.Add(new ErrorHandling(line, $"UNEXPEDTED CHARACTER.{c}"));
                 }
                 break;
         }
@@ -133,7 +133,7 @@ internal class Scanner
         }
         if (IsAtEnd())
         {
-            ErrorList.Add(new Error(line, $"UNDERTERMINATE STRING"));
+            ErrorList.Add(new ErrorHandling(line, $"UNDERTERMINATE STRING"));
         }
 
         Advance();
@@ -236,12 +236,12 @@ internal class Scanner
             }
             else
             {
-                ErrorList.Add(new Error(line, "UNCLOSED COMMENT BLOCK"));
+                ErrorList.Add(new ErrorHandling(line, "UNCLOSED COMMENT BLOCK"));
             }
         }
         else
         {
-            ErrorList.Add(new Error(line, "UNCLOSED COMMENT BLOCK"));
+            ErrorList.Add(new ErrorHandling(line, "UNCLOSED COMMENT BLOCK"));
         }
     }
 }

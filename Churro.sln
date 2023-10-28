@@ -5,7 +5,12 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Churro", "Churro\Churro.csproj", "{A9E34F3D-FD6D-44E1-8D8B-8DA1E4B5CBA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AST_Class_Generator", "AST_Class_Generator\AST_Class_Generator.csproj", "{483CB1F7-6C48-4B68-8A1C-698719648F8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AST_Class_Generator", "AST_Class_Generator\AST_Class_Generator.csproj", "{483CB1F7-6C48-4B68-8A1C-698719648F8C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{28661040-4F70-40C7-9FA0-0DDEA83A1186}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -71,10 +71,11 @@ namespace Churro
         {
             Scanner scanner = new(source);
             List<Token> list = scanner.scanTokens();
-            foreach (Token token in list)
-            {
-                Console.WriteLine($"{token.ToString()}");
-            }
+            Parser parser = new Parser(list);
+            Expr expression = parser.Parse();
+
+            Console.WriteLine(new ASTPrinter().print(expression));
+
             scanner.ErrorList.ForEach(l => l.report("run()"));
         }
     }
