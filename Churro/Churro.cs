@@ -6,7 +6,10 @@ namespace Churro
 {
     internal class Churro
     {
+        private static Interpreter interpreter = new Interpreter();
+
         private static bool hadError = false;
+        private static bool hadRuntimeError = false;
 
         private static void Main(string[] args)
         {
@@ -65,6 +68,10 @@ namespace Churro
             {
                 Environment.Exit(65);
             }
+            if (hadRuntimeError)
+            {
+                Environment.Exit(70);
+            }
         }
 
         private static void run(string source)
@@ -73,10 +80,18 @@ namespace Churro
             List<Token> list = scanner.scanTokens();
             Parser parser = new Parser(list);
             Expr expression = parser.Parse();
+            interpreter.interpret(expression);
 
             Console.WriteLine(new ASTPrinter().print(expression));
 
             scanner.ErrorList.ForEach(l => l.report("run()"));
+        }
+
+        private static void runtimeError(RuntimeError error)
+        {
+            Console.WriteLine(error.v +
+            "\n[line " + error.@operator.Line + "]");
+            hadRuntimeError = true;
         }
     }
 }
