@@ -17,7 +17,7 @@ namespace Churro
             }
             catch (RuntimeError ex)
             {
-                ex.ToString();
+                Churro.runtimeError(ex);
             }
         }
 

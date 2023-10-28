@@ -87,7 +87,7 @@ namespace Churro
             scanner.ErrorList.ForEach(l => l.report("run()"));
         }
 
-        private static void runtimeError(RuntimeError error)
+        public static void runtimeError(RuntimeError error)
         {
             Console.WriteLine(error.v +
             "\n[line " + error.@operator.Line + "]");
