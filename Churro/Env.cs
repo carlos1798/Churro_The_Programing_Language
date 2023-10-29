@@ -9,7 +9,18 @@ namespace Churro
 {
     internal class Env
     {
+        private Env enclosing;
         private Dictionary<string, Object> values = new();
+
+        public Env()
+        {
+            enclosing = null;
+        }
+
+        public Env(Env enclosing)
+        {
+            this.enclosing = enclosing;
+        }
 
         public void Define(string key, object value)
         {
@@ -22,6 +33,10 @@ namespace Churro
             {
                 return values[key.Lexeme];
             }
+            if (enclosing != null)
+            {
+                return enclosing.Get(key);
+            }
             throw new RuntimeError(key, $"Undefined variable {key.Lexeme}");
         }
 
@@ -31,6 +46,10 @@ namespace Churro
             {
                 values[name.Lexeme] = value;
                 return;
+            }
+            if (enclosing != null)
+            {
+                enclosing.Assign(name, value);
             }
             throw new RuntimeError(name, $"Undefined variable {name.Lexeme}");
         }

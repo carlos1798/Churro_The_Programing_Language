@@ -150,6 +150,29 @@ namespace Churro
             return value;
         }
 
+        public object visitBlockStmt(Stmt.Block stmt)
+        {
+            ExecuteBlock(stmt.statements, new Env(environment));
+            return null;
+        }
+
+        private void ExecuteBlock(List<Stmt> statements, Env env)
+        {
+            Env previous = this.environment;
+            try
+            {
+                this.environment = env;
+                foreach (Stmt statement in statements)
+                {
+                    Execute(statement);
+                }
+            }
+            finally
+            {
+                this.environment = previous;
+            }
+        }
+
         #region "Utils"
 
         private string Stringify(object value)

@@ -108,7 +108,22 @@ namespace Churro
             {
                 return PrintStatement();
             }
+            else if (Match(Token.TokenType.LEFT_BRACE))
+            {
+                return new Stmt.Block(Block());
+            }
             return ExpressionStatement();
+        }
+
+        private List<Stmt> Block()
+        {
+            List<Stmt> statements = new();
+            while (!Check(Token.TokenType.RIGHT_BRACE) && !IsAtEnd())
+            {
+                statements.Add(Declaration());
+            }
+            Consume(Token.TokenType.RIGHT_BRACE, "Expect } after block");
+            return statements;
         }
 
         private Stmt ExpressionStatement()

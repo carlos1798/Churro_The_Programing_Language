@@ -90,10 +90,13 @@ internal class Program
    "Assign   : Token name, Expr value",
                 };
         List<String> statements = new List<String>() {
-            "Expression : Expr expression",
- "Print : Expr expression",
- "Var        : Token name, Expr initializer"
+             "Expression : Expr expression",
+             "Print : Expr expression",
+             "Var : Token name, Expr initializer",
+             "Block : List<Stmt> statements",
+             "If: Expr condition, Stmt thenBranch," +
+                  " Stmt elseBranch",
         };
-        defineAst(outputDir, "Expr", types);
+        defineAst(outputDir, "Stmt", statements);
     }
 }

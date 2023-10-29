@@ -1,6 +1,10 @@
 ﻿var a = 1;
-var b = 2;
-a = b;
-print a;
+{
+  var a = a + 2;
 
-
+  print a;
+  {
+ var a = a + 2;
+  print a;
+}
+}
