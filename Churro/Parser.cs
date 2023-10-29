@@ -117,7 +117,20 @@ namespace Churro
             {
                 return IfStatement();
             }
+            else if (Match(Token.TokenType.WHILE))
+            {
+                return WhileStatement();
+            }
             return ExpressionStatement();
+        }
+
+        private Stmt WhileStatement()
+        {
+            Consume(Token.TokenType.LEFT_PAREN, "Expect ( after while");
+            Expr condition = Expression();
+            Consume(Token.TokenType.RIGHT_PAREN, "Expect ) after condition");
+            Stmt body = Statement();
+            return new Stmt.While(condition, body);
         }
 
         private Stmt IfStatement()

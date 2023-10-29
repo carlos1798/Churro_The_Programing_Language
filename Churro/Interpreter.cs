@@ -207,6 +207,15 @@ namespace Churro
             return Evaluate(expr.right);
         }
 
+        public object visitWhileStmt(Stmt.While stmt)
+        {
+            while (IsTruthy(Evaluate(stmt.condition)))
+            {
+                Execute(stmt.body);
+            }
+            return null;
+        }
+
         #region "Utils"
 
         private string Stringify(object value)

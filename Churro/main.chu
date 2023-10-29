@@ -1,12 +1,7 @@
-﻿var fizz = "fizz";
-var buzz = "buzz";
-var fizzbuzz = "fizzbuzz";
-
+﻿
 var a = 3;
 
-if (a == 4 and a == 3) {
-	print fizz;
-} else{
-	print buzz;
+while(a < 100){
+	print a;
+	a = a + 1;
 }
-print null or "yes"; 

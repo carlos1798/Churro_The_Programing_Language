@@ -50,6 +50,7 @@ namespace Churro
             if (enclosing != null)
             {
                 enclosing.Assign(name, value);
+                return;
             }
             throw new RuntimeError(name, $"Undefined variable {name.Lexeme}");
         }
