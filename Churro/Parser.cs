@@ -1,4 +1,5 @@
 ﻿using Churro.Errors;
+using Microsoft.VisualBasic;
 
 namespace Churro
 {
@@ -112,7 +113,26 @@ namespace Churro
             {
                 return new Stmt.Block(Block());
             }
+            else if (Match(Token.TokenType.IF))
+            {
+                return IfStatement();
+            }
             return ExpressionStatement();
+        }
+
+        private Stmt IfStatement()
+        {
+            Consume(Token.TokenType.LEFT_PAREN, "Expect ( after if");
+            Expr condition = Expression();
+            Consume(Token.TokenType.RIGHT_PAREN, "Expect ) after condition");
+
+            Stmt thenBranch = Statement();
+            Stmt elseBranch = null;
+            if (Match(Token.TokenType.ELSE))
+            {
+                elseBranch = Statement();
+            }
+            return new Stmt.If(condition, thenBranch, elseBranch);
         }
 
         private List<Stmt> Block()
@@ -145,7 +165,7 @@ namespace Churro
 
         private Expr Assignment()
         {
-            Expr expr = Equality();
+            Expr expr = Or();
             if (Match(Token.TokenType.EQUAL))
             {
                 Token equals = Previous();
@@ -156,6 +176,30 @@ namespace Churro
                     return new Expr.Assign(name, value);
                 }
                 Error(equals, "Invalid assignment target");
+            }
+            return expr;
+        }
+
+        private Expr Or()
+        {
+            Expr expr = And();
+            while (Match(Token.TokenType.OR))
+            {
+                Token Operator = Previous();
+                Expr right = And();
+                expr = new Expr.Logical(expr, Operator, right);
+            }
+            return expr;
+        }
+
+        private Expr And()
+        {
+            Expr expr = Equality();
+            while (Match(Token.TokenType.AND))
+            {
+                Token Operator = Previous();
+                Expr right = Equality();
+                expr = new Expr.Logical(expr, Operator, right);
             }
             return expr;
         }

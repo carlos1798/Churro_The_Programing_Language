@@ -88,6 +88,7 @@ internal class Program
                   "Unary    : Token Operator, Expr right",
  "Variable : Token name",
    "Assign   : Token name, Expr value",
+   "Logical  : Expr left, Token Operator, Expr right"
                 };
         List<String> statements = new List<String>() {
              "Expression : Expr expression",
@@ -96,6 +97,7 @@ internal class Program
              "Block : List<Stmt> statements",
              "If: Expr condition, Stmt thenBranch," +
                   " Stmt elseBranch",
+             "While      : Expr condition, Stmt body"
         };
         defineAst(outputDir, "Stmt", statements);
     }

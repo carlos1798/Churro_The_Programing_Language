@@ -35,6 +35,11 @@ namespace Churro.AstClasses
             return expr.value.ToString();
         }
 
+        public string visitLogicalExpr(Expr.Logical expr)
+        {
+            throw new NotImplementedException();
+        }
+
         public string visitUnaryExpr(Expr.Unary expr)
         {
             return parenthesize(expr.Operator.Lexeme, expr.right);

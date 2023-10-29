@@ -173,6 +173,40 @@ namespace Churro
             }
         }
 
+        public object visitIfStmt(Stmt.If stmt)
+        {
+            if (IsTruthy(Evaluate(stmt.condition)))
+            {
+                Execute(stmt.thenBranch);
+            }
+            else if (stmt.elseBranch != null)
+            {
+                Execute(stmt.elseBranch);
+            }
+            return null;
+        }
+
+        public object visitLogicalExpr(Expr.Logical expr)
+        {
+            Object left = Evaluate(expr.left);
+            if (!(expr.Operator.Type == Token.TokenType.OR))
+            {
+                if (IsTruthy(left))
+                {
+                    return left;
+                }
+                else
+                {
+                    if (!IsTruthy(left))
+                    {
+                        return left;
+                    }
+                }
+            }
+
+            return Evaluate(expr.right);
+        }
+
         #region "Utils"
 
         private string Stringify(object value)
