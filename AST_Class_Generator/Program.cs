@@ -75,18 +75,22 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        //        if (args.Length != 1)
-        //        {
-        //            Console.WriteLine("Usage:Generate Ast <output_dir>");
-        //            Environment.Exit(69);
-        //        }
-        //        String outputDir = args[0];
-        //        List<String> types = new List<String>() {
-        //          "Binary   : Expr left, Token Operator, Expr right",
-        //          "Grouping : Expr expression",
-        //          "Literal  : Object value",
-        //          "Unary    : Token Operator, Expr right"
-        //        };
-        //        defineAst(outputDir, "Expr", types);
+        if (args.Length != 1)
+        {
+            Console.WriteLine("Usage:Generate Ast <output_dir>");
+            Environment.Exit(69);
+        }
+        String outputDir = args[0];
+        List<String> types = new List<String>() {
+                  "Binary   : Expr left, Token Operator, Expr right",
+                  "Grouping : Expr expression",
+                  "Literal  : Object value",
+                  "Unary    : Token Operator, Expr right"
+                };
+        List<String> statements = new List<String>() {
+            "Expression : Expr expression",
+ "Print : Expr expression"
+        };
+        defineAst(outputDir, "Stmt", statements);
     }
 }

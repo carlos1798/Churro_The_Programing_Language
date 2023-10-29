@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace Churro
 {
-    internal class Interpreter : Expr.IVisitor<Object>
+    internal class Interpreter : Expr.IVisitor<Object>, Stmt.IVisitor<Object>
     {
-        public void interpret(Expr expression)
+        public void Interpret(List<Stmt> statements)
         {
             try
             {
-                Object value = Evaluate(expression);
-                Console.WriteLine(Stringify(value));
+                foreach (Stmt stmt in statements)
+                {
+                    Execute(stmt);
+                }
             }
             catch (RuntimeError ex)
             {
@@ -21,19 +23,38 @@ namespace Churro
             }
         }
 
-        private string Stringify(object value)
+        private void Execute(Stmt stmt)
         {
-            if (value == null) return "null";
-            if (value is Double)
+            stmt.Accept(this);
+        }
+
+        public object visitGroupingExpr(Expr.Grouping expr)
+        {
+            return Evaluate(expr.expression);
+        }
+
+        public object visitLiteralExpr(Expr.Literal expr)
+        {
+            return expr.value;
+        }
+
+        public object visitUnaryExpr(Expr.Unary expr)
+        {
+            Object right = Evaluate(expr.right);
+            switch (expr.Operator.Type)
             {
-                String text = value.ToString();
-                if (text.Last().Equals(".0"))
-                {
-                    text = text.Substring(0, text.Length - 2);
-                }
-                return text;
+                case Token.TokenType.MINUS:
+                    {
+                        checkNumberOperand(expr.Operator, right);
+                        return -(double)right;
+                    }
+                case Token.TokenType.BANG:
+                    {
+                        return !IsTruthy(right);
+                    }
             }
-            return value.ToString();
+            //Unreachable
+            return null;
         }
 
         public object visitBinaryExpr(Expr.Binary expr)
@@ -90,33 +111,34 @@ namespace Churro
             return null;
         }
 
-        public object visitGroupingExpr(Expr.Grouping expr)
+        public object visitExpressionStmt(Stmt.Expression stmt)
         {
-            return Evaluate(expr.expression);
-        }
-
-        public object visitLiteralExpr(Expr.Literal expr)
-        {
-            return expr.value;
-        }
-
-        public object visitUnaryExpr(Expr.Unary expr)
-        {
-            Object right = Evaluate(expr.right);
-            switch (expr.Operator.Type)
-            {
-                case Token.TokenType.MINUS:
-                    {
-                        checkNumberOperand(expr.Operator, right);
-                        return -(double)right;
-                    }
-                case Token.TokenType.BANG:
-                    {
-                        return !IsTruthy(right);
-                    }
-            }
-            //Unreachable
+            Evaluate(stmt.expression);
             return null;
+        }
+
+        public object visitPrintStmt(Stmt.Print stmt)
+        {
+            Object value = Evaluate(stmt.expression);
+            Console.WriteLine(Stringify(value));
+            return null;
+        }
+
+        #region "Utils"
+
+        private string Stringify(object value)
+        {
+            if (value == null) return "null";
+            if (value is Double)
+            {
+                String text = value.ToString();
+                if (text.Last().Equals(".0"))
+                {
+                    text = text.Substring(0, text.Length - 2);
+                }
+                return text;
+            }
+            return value.ToString();
         }
 
         private bool IsTruthy(object right)
@@ -153,5 +175,7 @@ namespace Churro
 
             throw new RuntimeError(@operator, "Operands must be a number");
         }
+
+        #endregion "Utils"
     }
 }

@@ -79,10 +79,10 @@ namespace Churro
             Scanner scanner = new(source);
             List<Token> list = scanner.scanTokens();
             Parser parser = new Parser(list);
-            Expr expression = parser.Parse();
-            interpreter.interpret(expression);
+            List<Stmt> statemets = parser.Parse();
+            interpreter.Interpret(statemets);
 
-            Console.WriteLine(new ASTPrinter().print(expression));
+            // Console.WriteLine(new ASTPrinter().print(statemets));
 
             scanner.ErrorList.ForEach(l => l.report("run()"));
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -68,16 +69,37 @@ namespace Churro
             throw Error(Peek(), v);
         }
 
-        public Expr Parse()
+        public List<Stmt> Parse()
         {
-            try
+            List<Stmt> statements = new List<Stmt>();
+            while (!IsAtEnd())
             {
-                return Expression();
-            }
-            catch (ParserError e)
-            {
-                return null;
+                statements.Add(Statement());
             };
+            return statements;
+        }
+
+        private Stmt Statement()
+        {
+            if (Match(Token.TokenType.PRINT))
+            {
+                return PrintStatement();
+            }
+            return ExpressionStatement();
+        }
+
+        private Stmt ExpressionStatement()
+        {
+            Expr Value = Expression();
+            Consume(Token.TokenType.SEMICOLON, "Expect ; at the end of statement");
+            return new Stmt.Expression(Value);
+        }
+
+        private Stmt PrintStatement()
+        {
+            Expr Value = Expression();
+            Consume(Token.TokenType.SEMICOLON, "Expect ; at the end of statement");
+            return new Stmt.Print(Value);
         }
 
         private Expr Expression()
