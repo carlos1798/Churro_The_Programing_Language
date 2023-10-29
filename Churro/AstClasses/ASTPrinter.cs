@@ -14,6 +14,11 @@ namespace Churro.AstClasses
             return expr.Accept(this);
         }
 
+        public string visitAssignExpr(Expr.Assign expr)
+        {
+            throw new NotImplementedException();
+        }
+
         public string visitBinaryExpr(Expr.Binary expr)
         {
             return parenthesize(expr.Operator.Lexeme, expr.right, expr.left);

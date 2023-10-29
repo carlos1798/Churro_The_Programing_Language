@@ -143,6 +143,13 @@ namespace Churro
             return null;
         }
 
+        public object visitAssignExpr(Expr.Assign expr)
+        {
+            object value = Evaluate(expr.value);
+            environment.Assign(expr.name, value);
+            return value;
+        }
+
         #region "Utils"
 
         private string Stringify(object value)

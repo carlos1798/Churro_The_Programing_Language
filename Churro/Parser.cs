@@ -7,10 +7,7 @@ namespace Churro
         private List<Token> tokens = new();
         private int current = 0;
 
-        public Parser(List<Token> tokens)
-        {
-            this.tokens = tokens;
-        }
+        #region "Utils"
 
         private Token Advance()
         {
@@ -60,6 +57,13 @@ namespace Churro
                 return Advance();
             }
             throw Error(Peek(), v);
+        }
+
+        #endregion "Utils"
+
+        public Parser(List<Token> tokens)
+        {
+            this.tokens = tokens;
         }
 
         public List<Stmt> Parse()
@@ -122,7 +126,24 @@ namespace Churro
         }
 
         private Expr Expression()
-        { return Equality(); }
+        { return Assignment(); }
+
+        private Expr Assignment()
+        {
+            Expr expr = Equality();
+            if (Match(Token.TokenType.EQUAL))
+            {
+                Token equals = Previous();
+                Expr value = Assignment();
+                if (expr is Expr.Variable)
+                {
+                    Token name = ((Expr.Variable)expr).name;
+                    return new Expr.Assign(name, value);
+                }
+                Error(equals, "Invalid assignment target");
+            }
+            return expr;
+        }
 
         private Expr Equality()
         {

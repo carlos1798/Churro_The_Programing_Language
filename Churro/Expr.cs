@@ -15,6 +15,8 @@ namespace Churro
             T visitUnaryExpr(Unary expr);
 
             T visitVariableExpr(Variable expr);
+
+            T visitAssignExpr(Assign expr);
         }
 
         public class Binary : Expr
@@ -95,6 +97,23 @@ namespace Churro
             public override T Accept<T>(IVisitor<T> visitor)
             {
                 return visitor.visitVariableExpr(this);
+            }
+        }
+
+        public class Assign : Expr
+        {
+            public Assign(Token name, Expr value)
+            {
+                this.name = name;
+                this.value = value;
+            }
+
+            public Token name;
+            public Expr value;
+
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                return visitor.visitAssignExpr(this);
             }
         }
     }
