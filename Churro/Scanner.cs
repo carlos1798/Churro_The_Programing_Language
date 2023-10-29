@@ -1,4 +1,5 @@
 ﻿using Churro;
+using Churro.Errors;
 using System.ComponentModel.Design;
 using System.Globalization;
 using System.Runtime.CompilerServices;

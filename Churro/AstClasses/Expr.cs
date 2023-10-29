@@ -1,4 +1,4 @@
-namespace Churro
+namespace Churro.AstClasses
 {
     public abstract class Expr
     {
@@ -51,12 +51,12 @@ namespace Churro
 
         public class Literal : Expr
         {
-            public Literal(Object value)
+            public Literal(object value)
             {
                 this.value = value;
             }
 
-            public Object value;
+            public object value;
 
             public override T Accept<T>(IVisitor<T> visitor)
             {

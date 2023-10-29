@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Churro
+namespace Churro.Errors
 {
     [Serializable]
     internal class ParserError : Exception
