@@ -1,4 +1,4 @@
-namespace Churro
+namespace Churro.AstClasses
 {
     public abstract class Stmt
     {

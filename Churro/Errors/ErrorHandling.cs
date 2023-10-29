@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Churro
+namespace Churro.Errors
 {
     public class ErrorHandling
     {
@@ -19,7 +19,7 @@ namespace Churro
 
         public void report(string where)
         {
-            Console.WriteLine($"[line {this.Line}] Error {where} : {Message}");
+            Console.WriteLine($"[line {Line}] Error {where} : {Message}");
         }
 
         public static void Error(Token token, string message)

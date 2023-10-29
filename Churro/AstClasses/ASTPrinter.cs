@@ -1,12 +1,11 @@
-﻿using Churro;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AST_Class_Generator
+namespace Churro.AstClasses
 {
     internal class ASTPrinter : Expr.IVisitor<string>
     {
@@ -36,7 +35,7 @@ namespace AST_Class_Generator
             return parenthesize(expr.Operator.Lexeme, expr.right);
         }
 
-        private string parenthesize(String name, params Expr[] exprs)
+        private string parenthesize(string name, params Expr[] exprs)
         {
             StringBuilder builder = new StringBuilder();
             builder.Append('(').Append(name);

@@ -1,5 +1,4 @@
-﻿using AST_Class_Generator;
-using Churro.AstClasses;
+﻿using Churro.AstClasses;
 using Churro.Errors;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
