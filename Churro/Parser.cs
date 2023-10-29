@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Churro.AstClasses;
-using Churro.Errors;
+﻿using Churro.Errors;
 
 namespace Churro
 {
@@ -76,9 +67,35 @@ namespace Churro
             List<Stmt> statements = new List<Stmt>();
             while (!IsAtEnd())
             {
-                statements.Add(Statement());
+                statements.Add(Declaration());
             };
             return statements;
+        }
+
+        private Stmt Declaration()
+        {
+            try
+            {
+                if (Match(Token.TokenType.VAR)) { return VarDeclaration(); }
+                return Statement();
+            }
+            catch (ParserError e)
+            {
+                Synchronize();
+                return null;
+            }
+        }
+
+        private Stmt VarDeclaration()
+        {
+            Token name = Consume(Token.TokenType.IDENTIFIER, "Expect Variable name");
+            Expr initializer = null;
+            if (Match(Token.TokenType.EQUAL))
+            {
+                initializer = Expression();
+            }
+            Consume(Token.TokenType.SEMICOLON, "Expect ; at the en of declaration");
+            return new Stmt.Var(name, initializer);
         }
 
         private Stmt Statement()
@@ -176,6 +193,7 @@ namespace Churro
             if (Match(Token.TokenType.FALSE)) { return new Expr.Literal(false); };
             if (Match(Token.TokenType.TRUE)) { return new Expr.Literal(true); };
 
+            if (Match(Token.TokenType.IDENTIFIER)) { return new Expr.Variable(Previous()); }
             if (Match(Token.TokenType.LEFT_PAREN))
             {
                 Expr expr = Expression();

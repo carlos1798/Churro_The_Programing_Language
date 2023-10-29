@@ -1,4 +1,4 @@
-namespace Churro.AstClasses
+namespace Churro
 {
     public abstract class Expr
     {
@@ -13,6 +13,8 @@ namespace Churro.AstClasses
             T visitLiteralExpr(Literal expr);
 
             T visitUnaryExpr(Unary expr);
+
+            T visitVariableExpr(Variable expr);
         }
 
         public class Binary : Expr
@@ -51,12 +53,12 @@ namespace Churro.AstClasses
 
         public class Literal : Expr
         {
-            public Literal(object value)
+            public Literal(Object value)
             {
                 this.value = value;
             }
 
-            public object value;
+            public Object value;
 
             public override T Accept<T>(IVisitor<T> visitor)
             {
@@ -78,6 +80,21 @@ namespace Churro.AstClasses
             public override T Accept<T>(IVisitor<T> visitor)
             {
                 return visitor.visitUnaryExpr(this);
+            }
+        }
+
+        public class Variable : Expr
+        {
+            public Variable(Token name)
+            {
+                this.name = name;
+            }
+
+            public Token name;
+
+            public override T Accept<T>(IVisitor<T> visitor)
+            {
+                return visitor.visitVariableExpr(this);
             }
         }
     }

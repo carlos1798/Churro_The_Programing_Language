@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Churro.AstClasses;
 using Churro.Errors;
 
 namespace Churro
 {
     internal class Interpreter : Expr.IVisitor<Object>, Stmt.IVisitor<Object>
     {
+        private Env environment = new();
+
         public void Interpret(List<Stmt> statements)
         {
             try
@@ -123,6 +124,22 @@ namespace Churro
         {
             Object value = Evaluate(stmt.expression);
             Console.WriteLine(Stringify(value));
+            return null;
+        }
+
+        public object visitVariableExpr(Expr.Variable expr)
+        {
+            return environment.Get(expr.name);
+        }
+
+        public object visitVarStmt(Stmt.Var stmt)
+        {
+            Object value = null;
+            if (stmt.initializer != null)
+            {
+                value = Evaluate(stmt.initializer);
+            }
+            environment.Define(stmt.name.Lexeme, value);
             return null;
         }
 

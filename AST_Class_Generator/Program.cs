@@ -85,11 +85,13 @@ internal class Program
                   "Binary   : Expr left, Token Operator, Expr right",
                   "Grouping : Expr expression",
                   "Literal  : Object value",
-                  "Unary    : Token Operator, Expr right"
+                  "Unary    : Token Operator, Expr right",
+ "Variable : Token name"
                 };
         List<String> statements = new List<String>() {
             "Expression : Expr expression",
- "Print : Expr expression"
+ "Print : Expr expression",
+ "Var        : Token name, Expr initializer"
         };
         defineAst(outputDir, "Stmt", statements);
     }

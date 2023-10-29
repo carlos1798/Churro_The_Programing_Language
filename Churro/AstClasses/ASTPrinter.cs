@@ -35,6 +35,11 @@ namespace Churro.AstClasses
             return parenthesize(expr.Operator.Lexeme, expr.right);
         }
 
+        public string visitVariableExpr(Expr.Variable expr)
+        {
+            throw new NotImplementedException();
+        }
+
         private string parenthesize(string name, params Expr[] exprs)
         {
             StringBuilder builder = new StringBuilder();
