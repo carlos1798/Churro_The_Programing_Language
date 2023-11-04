@@ -1,5 +1,6 @@
 ﻿using Churro.Errors;
 using Microsoft.VisualBasic;
+using System.Linq.Expressions;
 
 namespace Churro
 {
@@ -121,7 +122,64 @@ namespace Churro
             {
                 return WhileStatement();
             }
+            else if (Match(Token.TokenType.FOR))
+            {
+                return ForStatement();
+            }
             return ExpressionStatement();
+        }
+
+        private Stmt ForStatement()
+        {
+            Consume(Token.TokenType.LEFT_PAREN, "Expect ( after for");
+            Stmt initializer;
+
+            if (Match(Token.TokenType.SEMICOLON))
+            {
+                initializer = null;
+            }
+            else if (Match(Token.TokenType.VAR))
+            {
+                initializer = VarDeclaration();
+            }
+            else
+            {
+                initializer = ExpressionStatement();
+            }
+
+            Expr condition = null;
+            if (!Match(Token.TokenType.SEMICOLON))
+            {
+                condition = Expression();
+            }
+            Consume(Token.TokenType.SEMICOLON, "Expect ; after condition");
+
+            Expr increment = null;
+            if (!Check(Token.TokenType.RIGHT_PAREN))
+            {
+                increment = Expression();
+            }
+            Consume(Token.TokenType.RIGHT_PAREN, "Expect ) after for statement");
+            Stmt Body = Statement();
+
+            if (increment != null)
+            {
+                Body = new Stmt.Block(
+                    new List<Stmt> { Body, new Stmt.Expression(increment) }
+                    );
+            }
+            if (condition == null)
+            {
+                condition = new Expr.Literal(true);
+            }
+            Body = new Stmt.While(condition, Body);
+
+            if (initializer != null)
+            {
+                Body = new Stmt.Block(new List<Stmt>() { initializer, Body });
+            }
+
+            return Body;
         }
 
         private Stmt WhileStatement()
